@@ -1,0 +1,167 @@
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#arena {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* PLAYERS MOVESu */
+#players-moves {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.player-card {
+  max-width: 400px;
+  margin: 0rem;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
+  font-size: 0.75rem;
+}
+
+.player-card > h3 {
+  min-width: 80px;
+  margin: 0 auto 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.player-card > img {
+  display: block;
+  margin: 0.5rem auto;
+  width: 30vw;
+  max-width: 250px;
+  height: auto;
+}
+
+.player-card > p {
+  width: 50%;
+  min-height: 0.75rem;
+  margin: 0 auto 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+#versus {
+  margin: 0.25rem;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+}
+
+#versus img {
+  height: 8vw;
+  max-height: 80px;
+}
+
+/* INFORMATION */
+#information {
+  padding: 1rem 0;
+  font-size: 6vw;
+  text-align: center;
+}
+
+#information span {
+  font-weight: bold;
+}
+
+/* PLAYER CONTROLS */
+#player-controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#player-controls > img {
+  margin: 0 8px 0 0;
+  padding: 0.25rem;
+  width: 20vw;
+  max-width: 65px;
+  height: auto;
+  transition: transform 0.25s;
+}
+
+#player-controls > img:last-child {
+  margin-right: 0;
+}
+
+
+/* SCORE */
+#scores {
+  margin-top: 1rem;
+  padding: 0 0 0;
+  min-width: 200px;
+  font-size: 0.75rem;
+}
+
+#scores h3 {
+  margin: 0.5rem 0 0.25rem;
+  text-align: center;
+}
+
+#scores ul {
+  list-style: none;
+}
+
+#scores li {
+  padding-top: 0.25rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+#scores li span {
+  display: inline-block;
+  padding-right: 5px;
+  text-align: end;
+}
+
+/* QUERIES */
+@media (min-width: 375px) {
+
+  .player-card > img {
+    width: 100%;
+  }
+
+  #information, #scores {
+    font-size: 1rem;
+  }
+
+}
+
+@media (min-width: 425px) {
+
+  .player-card {
+    font-size: 1.5rem;
+  }
+
+  .player-card > p {
+    min-height: 1.5rem;
+  }
+
+}
+
+@media (min-width: 1024px) {
+
+  #game {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  #scores {
+    margin: 0 0 0 1.5rem;
+  }
+
+}

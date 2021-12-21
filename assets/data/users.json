@@ -1,0 +1,34 @@
+[
+  {
+    "name": "camaleon",
+    "password": "1234",
+    "image": {
+      "src": "./assets/img/camaleon.jpg",
+      "alt": "Camaleón"
+    }
+  },
+  {
+    "name": "foca",
+    "password": "1234",
+    "image": {
+      "src": "./assets/img/foca.jpg",
+      "alt": "Foca"
+    }
+  },
+  {
+    "name": "llama",
+    "password": "1234",
+    "image": {
+      "src": "./assets/img/llama.jpg",
+      "alt": "Foca"
+    }
+  },
+  {
+    "name": "pez",
+    "password": "1234",
+    "image": {
+      "src": "./assets/img/pez-arquitecto.jpeg",
+      "alt": "Pez arquitecto"
+    }
+  }
+]
