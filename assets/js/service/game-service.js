@@ -19,7 +19,7 @@ export class GameService extends Observable {
   static instance = null;
 
   maxScores = 5;
-  maxTurns = 3;
+  maxTurns = 10;
   turn = 0;
   winPoints = 100;
   losePoints = -30;
