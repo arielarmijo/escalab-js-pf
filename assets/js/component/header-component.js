@@ -5,6 +5,8 @@ import { LOGIN, LOGOUT } from '../model/event.js';
 export class HeaderComponent extends Component {
 
   template = `
+    <a href="https://github.com/arielarmijo/escalab-js-pf" target="_blank" class="repo zoom" title="Ver código fuente"><i class="fab fa-github"></i></a>
+    <div class="corner"></div>
     <h1>Cachipún</h1>
     <button id="logout-btn" class="button hidden">Logout</button>
   `;
