@@ -4,7 +4,6 @@ export class CachipunMove {
     this.name = name;
     this.image = image;
     this.winsAgainst = null;
-    this.loseAgainst = null;
   }
 
   isEquals(move) {
@@ -12,11 +11,11 @@ export class CachipunMove {
   }
 
   compare(move) {
+    if (this.isEquals(move))
+      return 0;
     if (this.winsAgainst.isEquals(move))
       return 1;
-    if (this.loseAgainst.isEquals(move))
-      return -1;
-    return 0;
+    return -1;
   }
 
 }
@@ -29,9 +28,4 @@ ROCK.winsAgainst = SCISSOR;
 SCISSOR.winsAgainst = PAPER;
 PAPER.winsAgainst = ROCK;
 
-ROCK.loseAgainst = PAPER;
-PAPER.loseAgainst = SCISSOR;
-SCISSOR.loseAgainst = ROCK;
-
-export {ROCK, SCISSOR, PAPER};
 export const MOVES = [ROCK, SCISSOR, PAPER];
