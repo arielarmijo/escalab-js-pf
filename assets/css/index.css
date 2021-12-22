@@ -49,11 +49,15 @@ main {
 }
 
 footer {
-  padding-bottom: 0.75rem;
+  padding: 1rem 0 0.75rem;
   text-align: center;
   color: gray;
   font-size: smaller;
   font-weight: normal;
+}
+
+footer i {
+  color: gray;
 }
 
 .hidden {
