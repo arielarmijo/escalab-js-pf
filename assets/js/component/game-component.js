@@ -1,14 +1,6 @@
-import { CACHIPUN } from '../model/cachipun.js';
+import { MOVES } from '../model/cachipun.js';
 import { Component } from './component.js';
 import { GameService } from '../service/game-service.js';
-
-const ID = {
-  information: 'information',
-  machine: 'machine',
-  human: 'human',
-  controls: 'player-controls',
-  scores: 'scores'
-};
 
 const SFX = {
   swing: new Audio('./assets/audio/swing.mp3')
@@ -19,7 +11,7 @@ export class GameComponent extends Component {
   template = `
     <div id="arena">
       <div id="players-moves">
-        <div id="${ID.machine}" class="player-card">
+        <div id="machine" class="player-card">
           <h3></h3>
           <img draggable="false"/>
           <p></p>
@@ -27,16 +19,16 @@ export class GameComponent extends Component {
         <div id="versus">
           <img src="./assets/img/vs.png" alt="Versus" draggable="false"/>
         </div>
-        <div id="${ID.human}" class="player-card">
+        <div id="human" class="player-card">
           <h3></h3>
           <img draggable="false"//>
           <p></p>
         </div>
       </div>
-      <div id="${ID.information}">Seleccione piedra, papel o tijera...</div>
-      <div id="${ID.controls}"></div>
+      <div id="information">Seleccione piedra, papel o tijera...</div>
+      <div id="player-controls"></div>
     </div>
-    <div id="${ID.scores}">
+    <div id="scores" class="hidden">
       <h3>Últimos Ganadores</h3>
       <ul></ul>
     </div>
@@ -50,35 +42,31 @@ export class GameComponent extends Component {
 
   init() {
     super.init();
-    this.isPlaying = true;
-    this.info = document.getElementById(ID.information);
-    this.machineName = document.querySelector(`#${ID.machine} h3`);
-    this.machineImage = document.querySelector(`#${ID.machine} img`);
-    this.machineScore = document.querySelector(`#${ID.machine} p`);
-    this.humanName = document.querySelector(`#${ID.human} h3`);
-    this.humanImage = document.querySelector(`#${ID.human} img`);
-    this.humanScore = document.querySelector(`#${ID.human} p`);
-    this.scores = document.getElementById(ID.scores);
+    this.info = document.getElementById('information');
+    this.machineName = document.querySelector('#machine h3');
+    this.machineImage = document.querySelector('#machine img');
+    this.machineScore = document.querySelector('#machine p');
+    this.humanName = document.querySelector('#human h3');
+    this.humanImage = document.querySelector('#human img');
+    this.humanScore = document.querySelector('#human p');
+    this.playerControls = document.getElementById('player-controls');
+    this.scores = document.getElementById('scores');
     this.makePlayerControls();
     this.hide();
   }
 
-
   makePlayerControls() {
-    const makeButtons = (acc, [key, value]) => acc += `<img src="${value.img}" class="button zoom" data-move="${key}" alt="${value.name}" draggable="false"/>`;
-    const addListener = (button) => {
-      button.onclick = (event) => { this.controlOnClick(event); };
-    };
-    const playerControls = document.getElementById(ID.controls);
-    playerControls.innerHTML = Object.entries(CACHIPUN).reduce(makeButtons, '');
-    Array.from(playerControls.children).forEach(addListener);
+    const makeButtons = (acc, {image}, i) => acc += `<img src="${image.src}" class="button zoom" data-move="${i}" alt="${image.alt}" draggable="false"/>`;
+    const addListener = (button) => { button.onclick = (event) => { this.controlOnClick(event); }; };
+    this.playerControls.innerHTML = MOVES.reduce(makeButtons, '');
+    Array.from(this.playerControls.children).forEach(addListener);
   }
 
   controlOnClick(event) {
-    const move = event.target.dataset.move;
+    const i = event.target.dataset.move;
     if (this.isPlaying)
       this.playSound(SFX.swing);
-    this.gameService.play(move);
+    this.gameService.play(MOVES[i]);
   }
 
   playSound(audio) {
@@ -117,9 +105,9 @@ export class GameComponent extends Component {
       let message = `<span>Turno ${body.turn}: </span>`;
       message += body.whoWinsTurn ? `¡${body.whoWinsTurn.name.toUpperCase()} gana!` : '¡Empate!';
       this.showTurnInfo(message);
-      this.updateMachineMove(body.machinePlayer.currentMove);
+      this.updateMachineImage(body.machinePlayer.currentMove.image);
       this.updateMachineScore(body.machinePlayer.score);
-      this.updateHumanMove(body.humanPlayer.currentMove);
+      this.updateHumanImage(body.humanPlayer.currentMove.image);
       this.updateHumanScore(body.humanPlayer.score);
     }
 
@@ -142,16 +130,6 @@ export class GameComponent extends Component {
 
   updateMachineName(name) {
     this.machineName.innerHTML = name;
-  }
-
-  updateHumanMove(move) {
-    const { img: src, name: alt } = move;
-    this.updateHumanImage({ src, alt });
-  }
-
-  updateMachineMove(move) {
-    const { img: src, name: alt } = move;
-    this.updateMachineImage({ src, alt });
   }
 
   updateHumanImage(image) {
@@ -185,8 +163,12 @@ export class GameComponent extends Component {
   }
 
   renderLastScores(scores) {
+    if (scores.length === 0)
+      return;
     const makeListItems = (acc, item) => acc += `<li><span>${item.player}:</span>${item.score} pts</li>`;
     this.scores.lastElementChild.innerHTML = scores.reduceRight(makeListItems, '');
+    if (this.scores.classList.contains('hidden'))
+      this.scores.classList.remove('hidden');
   }
 
   promptNewGame(message) {

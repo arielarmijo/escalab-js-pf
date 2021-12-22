@@ -16,7 +16,7 @@ export class HeaderComponent extends Component {
 
   init() {
     super.init();
-    this.logoutBtn = document.querySelector('#logout-btn');
+    this.logoutBtn = document.getElementById('logout-btn');
     this.logoutBtn.onclick = () => this.logout();
   }
 
@@ -25,17 +25,13 @@ export class HeaderComponent extends Component {
   }
 
   update(model) {
-
     const { event } = model;
-
     if (event === 'LOGIN') {
       this.logoutBtn.classList.remove('hidden');
       this.animate(this.logoutBtn);
     }
-
     if (event === 'LOGOUT')
       this.logoutBtn.classList.add('hidden');
-    
   }
 
 }

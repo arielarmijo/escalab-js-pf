@@ -1,17 +1,39 @@
-export const CACHIPUN = {
-  rock: {
-    name: 'Piedra',
-    img: './assets/img/piedra.png',
-    winsOver: ['Tijera']
-  },
-  paper: {
-    name: 'Papel',
-    img: './assets/img/papel.png',
-    winsOver: ['Piedra']
-  },
-  scissor: {
-    name: 'Tijera',
-    img: './assets/img/tijera.png',
-    winsOver: ['Papel']
+export class CachipunMove {
+
+  constructor(name, image) {
+    this.name = name;
+    this.image = image;
+    this.winsAgainst = null;
+    this.loseAgainst = null;
   }
-};
+
+  isEquals(move) {
+    return this.name === move.name;
+  }
+
+  compare(move) {
+    if (!(this.winsAgainst && this.loseAgainst))
+      throw new Error('winsAgainst y/o loseAgainst no inicializado');
+    if (this.winsAgainst.isEquals(move))
+      return 1;
+    if (this.loseAgainst.isEquals(move))
+      return -1;
+    return 0;
+  }
+
+}
+
+const ROCK = new CachipunMove('Piedra', {src: './assets/img/piedra.png', alt: 'Piedra'});
+const PAPER = new CachipunMove('Papel', {src: './assets/img/papel.png', alt: 'Papel'});
+const SCISSOR = new CachipunMove('Tijera', {src: './assets/img/tijera.png', alt: 'Tijera'});
+
+ROCK.winsAgainst = SCISSOR;
+SCISSOR.winsAgainst = PAPER;
+PAPER.winsAgainst = ROCK;
+
+ROCK.loseAgainst = PAPER;
+PAPER.loseAgainst = SCISSOR;
+SCISSOR.loseAgainst = ROCK;
+
+export {ROCK, SCISSOR, PAPER};
+export const MOVES = [ROCK, SCISSOR, PAPER];

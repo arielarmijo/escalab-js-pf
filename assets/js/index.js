@@ -1,5 +1,3 @@
-'use strict';
-
 import { FooterComponent } from './component/footer-component.js';
 import { GameComponent } from './component/game-component.js';
 import { HeaderComponent } from './component/header-component.js';

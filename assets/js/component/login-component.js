@@ -45,7 +45,6 @@ export class LoginComponent extends Component {
       // this.nameInput.value = '';
       // this.passwordInput.value = '';
     } catch (error) {
-      console.log(error);
       this.showErrorMessage(error.message);
     }
   }
@@ -67,18 +66,14 @@ export class LoginComponent extends Component {
   }
 
   update(model) {
-
     const { event } = model;
-
     if (event === 'LOGIN')
       this.componentElement.classList.add('hidden');
-
     if (event === 'LOGOUT') {
       this.errorMessage.innerHTML = '';
       this.componentElement.classList.remove('hidden');
       this.animate(this.componentElement);
     }
-
   }
 
 }

@@ -9,6 +9,7 @@ export class Queue {
   get elements() {
     return this._elements;
   }
+  
   set elements(value) {
     const n = value.length;
     this._elements = n > this.size ? value.slice(n - this.size) : value;

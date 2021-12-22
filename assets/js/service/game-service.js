@@ -3,16 +3,7 @@ import { Queue } from '../model/queue.js';
 import { Player } from '../model/player.js';
 import { Machine } from '../model/machine.js';
 import { UserService } from './user-service.js';
-import { User } from '../model/user.js';
-
-const HAL_9000 = {
-  name: 'HAL 9000',
-  password: null,
-  image: {
-    src: './assets/img/HAL9000.png',
-    alt: 'HAL 9000'
-  }
-};
+import { HAL_9000, UNKNOWN_USER } from '../model/user.js';
 
 export class GameService extends Observable {
 
@@ -23,12 +14,12 @@ export class GameService extends Observable {
   turn = 0;
   winPoints = 100;
   losePoints = -30;
-  storageItem = 'lastScores';
+  storageItemName = 'lastScores';
 
   constructor() {
     super();
     this.machine = new Machine(HAL_9000);
-    this.human = new Player(new User());
+    this.human = new Player(UNKNOWN_USER);
     this.turnWinner = null;
     this.gameWinner = null;
     this.lastScores = new Queue(this.maxScores);
@@ -43,7 +34,7 @@ export class GameService extends Observable {
     return GameService.instance;
   }
 
-  reset(user = new User()) {
+  reset(user = UNKNOWN_USER) {
     this.turn = 0;
     this.turnWinner = null;
     this.gameWinner = null;
@@ -100,14 +91,13 @@ export class GameService extends Observable {
   }
 
   whoWinsTurn() {
-    const humanMove = this.human.currentMove;
-    const machineMove = this.machine.currentMove;
-    if (humanMove.winsOver.includes(machineMove.name)) {
+    const c = this.human.currentMove.compare(this.machine.currentMove);
+    if (c === 1) {
       this.human.score += this.winPoints;
       this.machine.score += this.losePoints;
       return this.human;
     }
-    if (machineMove.winsOver.includes(humanMove.name)) {
+    if (c === -1) {
       this.machine.score += this.winPoints;
       this.human.score += this.losePoints;
       return this.machine;
@@ -120,11 +110,11 @@ export class GameService extends Observable {
       player: player.name.toUpperCase(),
       score: player.score
     });
-    sessionStorage.setItem(this.storageItem, JSON.stringify(this.lastScores.elements));
+    sessionStorage.setItem(this.storageItemName, JSON.stringify(this.lastScores.elements));
   }
 
   loadScores() {
-    const lastScores = sessionStorage.getItem(this.storageItem) ?? '[]';
+    const lastScores = sessionStorage.getItem(this.storageItemName) ?? '[]';
     this.lastScores.elements = JSON.parse(lastScores);
   }
 

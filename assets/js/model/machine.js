@@ -1,15 +1,15 @@
+import { MOVES } from './cachipun.js';
 import { Player } from './player.js';
 
 export class Machine extends Player {
 
-  constructor(user) {
-    super(user);
+  constructor({name, image}) {
+    super({name, image});
   }
 
   play() {
-    const options = Object.keys(this.moves);
-    const move = options[Math.floor(Math.random() * options.length)];
-    super.play(move);
+    const i = Math.floor(Math.random() * MOVES.length);
+    super.play(MOVES[i]);
   }
 
 }

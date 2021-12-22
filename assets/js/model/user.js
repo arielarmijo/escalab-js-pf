@@ -1,15 +1,6 @@
-const UNKNOWN_USER = {
-  name: 'UNKNOWN USER',
-  password: null,
-  image: {
-    src: './assets/img/anonymous-user.jpg',
-    alt: 'Usuario anónimo'
-  }
-};
-
 export class User {
 
-  constructor({name, password, image} = UNKNOWN_USER) {
+  constructor({name, password, image}) {
     this.name = name;
     this.password = password;
     this.image = image;
@@ -23,3 +14,21 @@ export class User {
   }
 
 }
+
+export const UNKNOWN_USER = new User({
+  name: 'UNKNOWN USER',
+  password: null,
+  image: {
+    src: './assets/img/anonymous-user.jpg',
+    alt: 'Usuario anónimo'
+  }
+});
+
+export const HAL_9000 = new User({
+  name: 'HAL 9000',
+  password: null,
+  image: {
+    src: './assets/img/HAL9000.png',
+    alt: 'HAL 9000'
+  }
+});

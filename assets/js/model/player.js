@@ -1,14 +1,10 @@
-import { CACHIPUN } from './cachipun.js';
-
 export class Player {
 
-  moves = CACHIPUN;
-  
   _score = 0;
 
-  constructor(user) {
-    this.name = user.name;
-    this.image = user.image;
+  constructor({name, image}) {
+    this.name = name;
+    this.image = image;
   }
 
   get score() {
@@ -18,8 +14,8 @@ export class Player {
     this._score = value < 0 ? 0 : value;
   }
 
-  play(choice) {
-    this.currentMove = this.moves[choice];
+  play(move) {
+    this.currentMove = move;
   }
 
   reset() {
