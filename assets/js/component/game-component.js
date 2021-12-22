@@ -1,6 +1,7 @@
 import { MOVES } from '../model/cachipun.js';
 import { Component } from './component.js';
 import { GameService } from '../service/game-service.js';
+import { GAME_OVER, KILL_GAME, LAST_TURN, NEW_GAME, RESET, TURN } from '../model/event.js';
 
 const SFX = {
   swing: new Audio('./assets/audio/swing.mp3')
@@ -57,8 +58,8 @@ export class GameComponent extends Component {
 
   makePlayerControls() {
     const makeButtons = (acc, {image}, i) => acc += `<img src="${image.src}" class="button zoom" data-move="${i}" alt="${image.alt}" draggable="false"/>`;
-    const addListener = (button) => { button.onclick = (event) => { this.controlOnClick(event); }; };
     this.playerControls.innerHTML = MOVES.reduce(makeButtons, '');
+    const addListener = (button) => { button.onclick = (event) => { this.controlOnClick(event); }; };
     Array.from(this.playerControls.children).forEach(addListener);
   }
 
@@ -76,33 +77,31 @@ export class GameComponent extends Component {
 
   update(model) {
 
-    console.log(model);
-
     const { event, body } = model;
 
-    if (event === 'NEW_GAME' || event === 'KILL_GAME') {
+    if (event.isEquals(NEW_GAME) || event.isEquals(KILL_GAME)) {
       const message = 'Seleccione piedra, papel o tijera...';
       this.showTurnInfo(message);
       this.updateMachineName(body.machinePlayer.name);
       this.updateMachineImage(body.machinePlayer.image);
-      this.updateMachineScore('');
+      this.updateMachineScore(body.machinePlayer.score);
       this.updateHumanName(body.humanPlayer.name);
       this.updateHumanImage(body.humanPlayer.image);
-      this.updateHumanScore('');
-      this.renderLastScores(body.lastScores);
+      this.updateHumanScore(body.humanPlayer.score);
       this.isPlaying = true;
     }
 
-    if (event === 'NEW_GAME') {
+    if (event.isEquals(NEW_GAME)) {
+      this.renderLastScores(body.lastScores);
       this.show();
     }
 
-    if (event === 'KILL_GAME') {
+    if (event.isEquals(KILL_GAME)) {
       this.hide();
     }
 
-    if (event === 'TURN' || event === 'LAST_TURN') {
-      let message = `<span>Turno ${body.turn}: </span>`;
+    if (event.isEquals(TURN) || event.isEquals(LAST_TURN)) {
+      let message = `<b>Turno ${body.turn}: </b>`;
       message += body.whoWinsTurn ? `¡${body.whoWinsTurn.name.toUpperCase()} gana!` : '¡Empate!';
       this.showTurnInfo(message);
       this.updateMachineImage(body.machinePlayer.currentMove.image);
@@ -111,14 +110,22 @@ export class GameComponent extends Component {
       this.updateHumanScore(body.humanPlayer.score);
     }
 
-    if (event === 'LAST_TURN') {
+    if (event.isEquals(LAST_TURN)) {
       this.renderLastScores(body.lastScores);
-      const message = `¡${body.whoWinsGame.name.toUpperCase()} ha ganado la partida!\n¿Jugar otra vez?`;
-      this.promptNewGame(message);
+      const winner = body.whoWinsGame;
+      let message = winner ? `¡${winner.name.toUpperCase()} ha ganado la partida!` : '¡Empate!';
+      message += '\n¿Jugar otra vez?';
+      this.promptNewGame(message, () => {
+        let msg = winner ? `${winner.name.toUpperCase()} ha ganado la partida` : '¡Empate!';
+        msg = '<b>Game Over: </b>' + msg;
+        this.showTurnInfo(msg);
+        this.updateMachineImage(body.machinePlayer.image);
+        this.updateHumanImage(body.humanPlayer.image);
+      });
       this.isPlaying = false;
     }
 
-    if (event === 'GAME_OVER') {
+    if (event.isEquals(GAME_OVER)) {
       this.promptNewGame('Juego terminado. ¿Iniciar otra partida?');
     }
 
@@ -171,13 +178,15 @@ export class GameComponent extends Component {
       this.scores.classList.remove('hidden');
   }
 
-  promptNewGame(message) {
+  promptNewGame(message, callback) {
     setTimeout(() => {
       if (confirm(message)) {
         this.gameService.update({
-          event: 'RESET',
+          event: RESET,
           body: this.gameService.human
         });
+      } else {
+        callback && callback();
       }
     }, 50);
   }

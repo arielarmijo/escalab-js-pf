@@ -13,6 +13,7 @@ export class Observable {
   }
 
   notify(model) {
+    console.log({event: model.event.name, body: model.body});
     this.observers.forEach(obs => {
       obs.update(model);
     });

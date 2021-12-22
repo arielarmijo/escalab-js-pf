@@ -1,5 +1,6 @@
 import { Observable } from '../model/observable.js';
 import { User, UNKNOWN_USER } from '../model/user.js';
+import { LOGIN, LOGOUT } from '../model/event.js';
 
 export class UserService extends Observable {
 
@@ -28,7 +29,7 @@ export class UserService extends Observable {
     this.user = observedUser;
     this.user.image = expectedUser.image;
     this.notify({
-      event: 'LOGIN',
+      event: LOGIN,
       body: this.user
     });
   }
@@ -36,7 +37,7 @@ export class UserService extends Observable {
   logout() {
     this.user = UNKNOWN_USER;
     this.notify({
-      event: 'LOGOUT',
+      event: LOGOUT,
       body: this.user
     });
   }

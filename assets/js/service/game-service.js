@@ -3,6 +3,7 @@ import { Queue } from '../model/queue.js';
 import { Player } from '../model/player.js';
 import { Machine } from '../model/machine.js';
 import { UserService } from './user-service.js';
+import { GAME_OVER, KILL_GAME, LAST_TURN, LOGIN, LOGOUT, NEW_GAME, RESET, TURN } from '../model/event.js';
 import { HAL_9000, UNKNOWN_USER } from '../model/user.js';
 
 export class GameService extends Observable {
@@ -46,7 +47,7 @@ export class GameService extends Observable {
 
     if (this.isGameFinished()) {
       this.notify({
-        event: 'GAME_OVER',
+        event: GAME_OVER,
         body: this.getState()
       });
       return;
@@ -59,16 +60,16 @@ export class GameService extends Observable {
 
     if (this.isLastTurn()) {
       this.gameWinner = this.whoWinsGame();
-      this.saveScore(this.gameWinner);
+      this.gameWinner && this.saveScore(this.gameWinner);
       this.notify({
-        event: 'LAST_TURN',
+        event: LAST_TURN,
         body: this.getState()
       });
       return;
     }
 
     this.notify({
-      event: 'TURN',
+      event: TURN,
       body: this.getState()
     });
 
@@ -122,18 +123,18 @@ export class GameService extends Observable {
 
     const { event, body } = model;
 
-    if (event === 'LOGIN' || event === 'RESET') {
+    if (event.isEquals(LOGIN) || event.isEquals(RESET)) {
       this.reset(body);
       this.notify({
-        event: 'NEW_GAME',
+        event: NEW_GAME,
         body: this.getState()
       });
     }
 
-    if (event === 'LOGOUT') {
+    if (event.isEquals(LOGOUT)) {
       this.reset();
       this.notify({
-        event: 'KILL_GAME',
+        event: KILL_GAME,
         body: this.getState()
       });
     }

@@ -1,5 +1,6 @@
 import { Component } from './component.js';
 import { UserService } from '../service/user-service.js';
+import { LOGIN, LOGOUT } from '../model/event.js';
 
 export class HeaderComponent extends Component {
 
@@ -26,11 +27,11 @@ export class HeaderComponent extends Component {
 
   update(model) {
     const { event } = model;
-    if (event === 'LOGIN') {
+    if (event.isEquals(LOGIN)) {
       this.logoutBtn.classList.remove('hidden');
       this.animate(this.logoutBtn);
     }
-    if (event === 'LOGOUT')
+    if (event.isEquals(LOGOUT))
       this.logoutBtn.classList.add('hidden');
   }
 

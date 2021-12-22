@@ -1,3 +1,4 @@
+import { LOGIN, LOGOUT } from '../model/event.js';
 import { Component } from './component.js';
 import { UserService } from '../service/user-service.js';
 
@@ -67,9 +68,9 @@ export class LoginComponent extends Component {
 
   update(model) {
     const { event } = model;
-    if (event === 'LOGIN')
+    if (event.isEquals(LOGIN))
       this.componentElement.classList.add('hidden');
-    if (event === 'LOGOUT') {
+    if (event.isEquals(LOGOUT)) {
       this.errorMessage.innerHTML = '';
       this.componentElement.classList.remove('hidden');
       this.animate(this.componentElement);
