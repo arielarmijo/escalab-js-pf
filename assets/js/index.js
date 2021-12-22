@@ -1,7 +1,7 @@
-import { FooterComponent } from './component/footer-component.js';
-import { GameComponent } from './component/game-component.js';
 import { HeaderComponent } from './component/header-component.js';
 import { LoginComponent } from './component/login-component.js';
+import { GameComponent } from './component/game-component.js';
+import { FooterComponent } from './component/footer-component.js';
 
 const components = [
   new HeaderComponent('header'),

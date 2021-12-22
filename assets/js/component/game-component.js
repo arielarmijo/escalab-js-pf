@@ -116,7 +116,7 @@ export class GameComponent extends Component {
       let message = winner ? `¡${winner.name.toUpperCase()} ha ganado la partida!` : '¡Empate!';
       message += '\n¿Jugar otra vez?';
       this.promptNewGame(message, () => {
-        let msg = winner ? `${winner.name.toUpperCase()} ha ganado la partida` : '¡Empate!';
+        let msg = winner ? `${winner.name.toUpperCase()} ha ganado la última partida` : '¡Empate!';
         msg = '<b>Game Over: </b>' + msg;
         this.showTurnInfo(msg);
         this.updateMachineImage(body.machinePlayer.image);
