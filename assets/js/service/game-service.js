@@ -54,7 +54,7 @@ export class GameService extends Observable {
 
     this.turn++;
     this.human.play(move);
-    this.machine.play();
+    this.machine.randomPlay();
     this.turnWinner = this.whoWinsTurn();
 
     if (this.isLastTurn()) {

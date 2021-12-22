@@ -15,6 +15,7 @@ export class Player {
   }
 
   play(move) {
+    this.lastMove = this.currentMove;
     this.currentMove = move;
   }
 

@@ -12,8 +12,6 @@ export class CachipunMove {
   }
 
   compare(move) {
-    if (!(this.winsAgainst && this.loseAgainst))
-      throw new Error('winsAgainst y/o loseAgainst no inicializado');
     if (this.winsAgainst.isEquals(move))
       return 1;
     if (this.loseAgainst.isEquals(move))
