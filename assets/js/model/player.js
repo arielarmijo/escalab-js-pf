@@ -10,6 +10,7 @@ export class Player {
   get score() {
     return this._score;
   }
+  
   set score(value) {
     this._score = value < 0 ? 0 : value;
   }
