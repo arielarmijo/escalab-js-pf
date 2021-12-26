@@ -7,8 +7,8 @@ export class LoginComponent extends Component {
   template = `
       <img src="./assets/img/anonymous-user.jpg" alt="Usuario anónimo">
       <p class="error"></p>
-      <input name="user" type="text" placeholder="usuario" value="foca">
-      <input name="password" type="password" placeholder="contraseña" value="1234">
+      <input name="user" type="text" placeholder="usuario">
+      <input name="password" type="password" placeholder="contraseña">
       <button class="button">Login</button>
       <div id="users" class="hidden"></div>
   `;
@@ -21,12 +21,19 @@ export class LoginComponent extends Component {
 
   init() {
     super.init();
+    this.userService.getUsers().then(this.renderUserList);
+    this.errorMessage = document.querySelector(`${this.tag} p.error`);
     this.nameInput = document.querySelector(`${this.tag}`).children.user;
     this.passwordInput = document.querySelector(`${this.tag}`).children.password;
-    this.errorMessage = document.querySelector(`${this.tag} p.error`);
+    this.nameInput.focus();
+    const inputCallback = (event) => {
+      if (event.key === 'Enter') 
+        this.login();
+    };
+    this.nameInput.onkeyup = inputCallback;
+    this.passwordInput.onkeyup = inputCallback;
     const loginBtn = document.querySelector(`${this.tag} button`);
     loginBtn.onclick = () => { this.login(); };
-    this.userService.getUsers().then(this.renderUserList);
   }
 
   async login() {
@@ -43,8 +50,8 @@ export class LoginComponent extends Component {
       }
       await this.userService.login({ name, password });
       this.errorMessage.innerHTML = '';
-      // this.nameInput.value = '';
-      // this.passwordInput.value = '';
+      this.nameInput.value = '';
+      this.passwordInput.value = '';
     } catch (error) {
       this.showErrorMessage(error.message);
     }
@@ -73,6 +80,7 @@ export class LoginComponent extends Component {
     if (event.isEquals(LOGOUT)) {
       this.errorMessage.innerHTML = '';
       this.componentElement.classList.remove('hidden');
+      this.nameInput.focus();
       this.animate(this.componentElement);
     }
   }
