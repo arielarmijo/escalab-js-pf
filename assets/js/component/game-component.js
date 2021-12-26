@@ -113,11 +113,9 @@ export class GameComponent extends Component {
     if (event.isEquals(LAST_TURN)) {
       this.renderLastScores(body.lastScores);
       const winner = body.whoWinsGame;
-      let message = winner ? `¡${winner.name.toUpperCase()} ha ganado la partida!` : '¡Empate!';
-      message += '\n¿Jugar otra vez?';
+      let message = `${winner ? `¡${winner.name.toUpperCase()} ha ganado la partida!` : '¡Empate!'}\n¿Jugar otra vez?`;
       this.promptNewGame(message, () => {
-        let msg = winner ? `${winner.name.toUpperCase()} ha ganado la última partida` : '¡Empate!';
-        msg = '<b>Game Over: </b>' + msg;
+        let msg = `<b>Game Over: </b> ${winner ? `${winner.name.toUpperCase()} ha ganado la última partida` : '¡Empate!'}`;
         this.showTurnInfo(msg);
         this.updateMachineImage(body.machinePlayer.image);
         this.updateHumanImage(body.humanPlayer.image);
@@ -154,15 +152,11 @@ export class GameComponent extends Component {
   }
 
   updateMachineScore(score) {
-    this.updateScore(this.machineScore, score);
+    this.machineScore.innerHTML = score;
   }
 
   updateHumanScore(score) {
-    this.updateScore(this.humanScore, score);
-  }
-
-  updateScore(element, score) {
-    element.innerHTML = score;
+    this.humanScore.innerHTML = score;
   }
 
   showTurnInfo(message) {
@@ -186,7 +180,7 @@ export class GameComponent extends Component {
           body: this.gameService.human
         });
       } else {
-        callback && callback();
+        callback?.();
       }
     }, 50);
   }

@@ -92,13 +92,13 @@ export class GameService extends Observable {
   }
 
   whoWinsTurn() {
-    const c = this.human.currentMove.compare(this.machine.currentMove);
-    if (c === 1) {
+    const humanVsMachine = this.human.currentMove.compare(this.machine.currentMove);
+    if (humanVsMachine === 1) {
       this.human.score += this.winPoints;
       this.machine.score += this.losePoints;
       return this.human;
     }
-    if (c === -1) {
+    if (humanVsMachine === -1) {
       this.machine.score += this.winPoints;
       this.human.score += this.losePoints;
       return this.machine;
